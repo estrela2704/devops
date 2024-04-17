@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Publish to DockerHub') {
             steps {
-                sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
+                sh "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWORD}"
                 sh 'docker push felipeestrela2704/user-management:latest'
             }
         }
