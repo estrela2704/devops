@@ -1,10 +1,9 @@
 pipeline {
     agent any
     
-
     environment {
-        DOCKERHUB_USER = credentials('DOCKERHUB_USERNAME')
-        DOCKERHUB_PASSWORD = credentials('DOCKERHUB_PASSWORD')
+        DOCKERHUB_USER = credentials('DOCKERHUB_USERNAME')  // Use o ID da credencial
+        DOCKERHUB_PASSWORD = credentials('DOCKERHUB_PASSWORD')  // Use o ID da credencial
     }
 
     stages {
@@ -20,8 +19,7 @@ pipeline {
         }
         stage('Publish to DockerHub') {
             steps {
-            withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
                 sh 'docker push felipeestrela2704/user-management:latest'
             }
         }
@@ -29,7 +27,6 @@ pipeline {
             steps {
                 sh 'kubectl apply -f KBS/'
             }
-        }
         }
     }
 }
