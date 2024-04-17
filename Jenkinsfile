@@ -1,12 +1,6 @@
 pipeline {
     agent any
     
-environment {
-    DOCKERHUB_USER = credentials('DOCKERHUB')
-    DOCKERHUB_PASSWORD = credentials('DOCKERHUB')
-}
-
-
     stages {
         stage('Clone Repository') {
             steps {
@@ -15,13 +9,18 @@ environment {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t felipeestrela2704/user-management:latest .'
+                script {
+                    docker.build('felipeestrela2704/user-management:latest')
+                }
             }
         }
         stage('Publish to DockerHub') {
             steps {
-                sh "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWORD}"
-                sh 'docker push felipeestrela2704/user-management:latest'
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        docker.image('felipeestrela2704/user-management:latest').push()
+                    }
+                }
             }
         }
         stage('Deploy to Kubernetes') {
