@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-management
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: user-management
+  template:
+    metadata:
+      labels:
+        app: user-management
+    spec:
+      containers:
+        - name: user-management
+          image: felipeestrela2704/user-management:latest
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /api # Endereço que sua aplicação responde para verificar a prontidão
+              port: 3000 # Porta em que sua aplicação está sendo executada
+            initialDelaySeconds: 15 # Aguarda 15 segundos após o início do contêiner antes de executar a sonda
+            periodSeconds: 10 # Executa a sonda a cada 10 segundos
