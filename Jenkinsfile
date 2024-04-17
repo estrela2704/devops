@@ -25,7 +25,10 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f KBS/'
+                bat 'kubectl apply -f kbs/configMap'
+                bat 'kubectl apply -f kbs/deploy'
+                bat 'kubectl apply -f kbs/pvc'
+                bat 'kubectl apply -f kbs/svc'
             }
         }
     }
