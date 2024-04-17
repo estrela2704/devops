@@ -1,10 +1,11 @@
 pipeline {
     agent any
     
-    environment {
-        DOCKERHUB_USER = credentials('DOCKERHUB_USERNAME')  // Use o ID da credencial
-        DOCKERHUB_PASSWORD = credentials('DOCKERHUB_PASSWORD')  // Use o ID da credencial
-    }
+environment {
+    DOCKERHUB_USER = credentials('DOCKERHUB')
+    DOCKERHUB_PASSWORD = credentials('DOCKERHUB')
+}
+
 
     stages {
         stage('Clone Repository') {
